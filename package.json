@@ -1,0 +1,31 @@
+{
+  "name": "officemate-edge",
+  "version": "1.0.0",
+  "description": "The Productivity Copilot for Microsoft 365, Outlook Web, Teams and Project Workspace Tab Stash",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build.js --watch",
+    "build": "tsc --noEmit && node scripts/build.js",
+    "generate-icons": "node scripts/generate-icons.js"
+  },
+  "keywords": [
+    "microsoft-edge",
+    "microsoft-365",
+    "outlook",
+    "teams",
+    "email-drafter",
+    "meeting-notes",
+    "tab-stash",
+    "workspace-switcher",
+    "productivity"
+  ],
+  "author": "Sakhawat",
+  "license": "MIT",
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/chrome": "^0.0.280",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  }
+}

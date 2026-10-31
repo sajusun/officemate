@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OfficeMate for Edge</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-app">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="brand">
+        <div class="logo">OM</div>
+        <div>
+          <div class="app-title">OfficeMate <span class="accent-text">Copilot</span></div>
+          <div class="app-subtitle">Microsoft 365 & Tab Switcher</div>
+        </div>
+      </div>
+      <div id="plan-badge" class="badge-free">FREE</div>
+    </header>
+
+    <!-- Nav Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="workspaces">🗂️ Workspaces</button>
+      <button class="tab-btn" data-tab="drafts">✉️ Quick Draft</button>
+      <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+    </nav>
+
+    <!-- Tab 1: Workspaces -->
+    <main class="tab-panel active" id="panel-workspaces">
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="stash-name-input" class="popup-input" placeholder="Workspace name (e.g. Q3 Review)">
+        <button class="action-btn primary" id="btn-popup-stash" style="white-space: nowrap;">⚡ Stash Tabs</button>
+      </div>
+
+      <div class="section-heading">Saved Workspaces (<span id="workspaces-count">0</span>)</div>
+      <div class="workspaces-list" id="popup-workspaces-list">
+        <!-- Rendered dynamically -->
+      </div>
+    </main>
+
+    <!-- Tab 2: Quick Drafts -->
+    <main class="tab-panel" id="panel-drafts">
+      <label class="section-heading">Select Tone</label>
+      <select id="draft-tone-select" class="popup-input">
+        <option value="polite_pushback">🛡️ Polite Pushback (Boundaries & Scope)</option>
+        <option value="executive_status">📊 Executive Status Update</option>
+        <option value="formal_confirmation">🤝 Formal Confirmation</option>
+        <option value="friendly_followup">👋 Friendly Follow-Up</option>
+        <option value="meeting_reschedule">📅 Meeting Reschedule</option>
+      </select>
+
+      <label class="section-heading" style="margin-top: 8px;">Context / Notes</label>
+      <textarea id="draft-notes-input" class="popup-input" rows="3" placeholder="Key points or client name..."></textarea>
+
+      <button class="action-btn primary" id="btn-popup-generate" style="margin-top: 6px;">⚡ Generate & Copy Draft</button>
+      <div id="draft-copied-msg" style="display: none; font-size: 11px; color: #34d399; text-align: center; margin-top: 4px;">✓ Copied to clipboard! Ready to paste into Outlook.</div>
+    </main>
+
+    <!-- Tab 3: Settings -->
+    <main class="tab-panel" id="panel-settings">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="setting-name" class="popup-input" placeholder="Alex Mercer">
+      </div>
+      <div class="form-group">
+        <label>Job Title & Company</label>
+        <input type="text" id="setting-title" class="popup-input" placeholder="Senior Product Lead, Enterprise Corp">
+      </div>
+
+      <div class="form-group">
+        <label>AI Provider</label>
+        <select id="setting-ai-provider" class="popup-input">
+          <option value="offline">Offline Intelligent Templates (Instant & Free)</option>
+          <option value="openai">OpenAI (BYOK)</option>
+          <option value="gemini">Google Gemini (BYOK)</option>
+        </select>
+      </div>
+      <div class="form-group" id="group-api-key" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label>API Key</label>
+          <a id="api-key-link" href="https://platform.openai.com/api-keys" target="_blank" style="font-size: 11px; color: #38bdf8; text-decoration: none;">Get Key ↗</a>
+        </div>
+        <input type="password" id="setting-api-key" class="popup-input" placeholder="sk-... or AIza...">
+      </div>
+
+      <div class="form-group" style="margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+          <label>Pro License Key</label>
+          <a href="#pro_key" target="_blank" class="pro-buy-link">🛒 Buy Pro Key ↗</a>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <input type="text" id="setting-license-key" class="popup-input" placeholder="Enter License Key...">
+          <button class="action-btn" id="btn-activate-pro">Activate</button>
+        </div>
+        <a href="#pro_key" target="_blank" class="btn-buy-pro-banner" id="banner-buy-pro">
+          👑 Unlock Unlimited Drafts & Workspaces (#pro_key) ↗
+        </a>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <button class="sidebar-launch-btn" id="btn-open-inpage-sidebar">Open Copilot Sidebar (Alt+Shift+C)</button>
+    </footer>
+
+    <!-- Custom Modal Dialog (replaces native alert) -->
+    <div id="custom-modal-backdrop" class="modal-backdrop" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <span id="modal-icon" class="modal-icon">ℹ️</span>
+            <h4 id="modal-title" class="modal-title">Notice</h4>
+          </div>
+          <button id="modal-btn-close" class="modal-close-x">✕</button>
+        </div>
+        <div class="modal-body">
+          <p id="modal-message" class="modal-message"></p>
+        </div>
+        <div class="modal-footer" id="modal-footer">
+          <a href="#pro_key" target="_blank" id="modal-btn-pro" class="modal-btn-pro" style="display: none;">👑 Upgrade to Pro ↗</a>
+          <button id="modal-btn-ok" class="modal-btn-ok">Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Toast -->
+    <div id="popup-toast" class="popup-toast" style="display: none;"></div>
+  </div>
+
+  <script type="module" src="popup.ts"></script>
+</body>
+</html>
