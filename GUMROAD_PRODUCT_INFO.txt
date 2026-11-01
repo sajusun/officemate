@@ -1,0 +1,110 @@
+================================================================================
+OFFICEMATE PRO — GUMROAD PRODUCT SETUP & HIGH-CONVERTING SALES COPY
+URL: https://sajusun.gumroad.com/l/officemate-pro
+Product Verify ID: ujrPYYMB6DKRyi6Exc7rWw==
+================================================================================
+
+1. PRODUCT BASICS
+--------------------------------------------------------------------------------
+Product Name / Title:
+OfficeMate Pro — Lifetime License
+
+Summary (1-Line Catchy Tagline):
+The AI Email Copilot & Tab Workspace Stasher for Microsoft 365, Outlook Web, and Teams.
+
+Call to Action (Button):
+Buy this / Get Lifetime License
+
+Category:
+Software Development / Productivity Tools
+
+Custom Permalink:
+https://sajusun.gumroad.com/l/officemate-pro
+
+
+2. PRICING & TIER SETUP
+--------------------------------------------------------------------------------
+Pricing Model:
+Fixed Price (One-time payment)
+
+Amount:
+$8.99 USD (Recommended Special Launch Price) or $14.99 USD
+
+License Keys Toggle:
+[✓] Generate unique license key per sale (MUST BE ENABLED)
+[ ] Allow customers to choose number of seats per license (OFF - Extension handles 3 devices)
+
+
+3. PRODUCT MEDIA & VISUAL ASSETS
+--------------------------------------------------------------------------------
+Upload these pre-rendered high-res images from:
+public/store-assets/
+
+1. Product Thumbnail (1:1 Square):
+   File: public/store-assets/gumroad-thumbnail-600x600.png (600 x 600 px)
+
+2. Cover Showcase Banner (16:9 Wide):
+   File: public/store-assets/gumroad-cover-1280x720.png (1280 x 720 px)
+
+
+4. HIGH-CONVERTING SALES COPY (PASTE INTO GUMROAD DESCRIPTION BOX)
+--------------------------------------------------------------------------------
+⚡ Reclaim 10+ Hours Every Week from Repetitive Outlook Emails & Cluttered Browser Tabs.
+
+OfficeMate Pro is the executive productivity copilot engineered specifically for busy managers, engineers, and professionals living in Microsoft 365, Outlook Web, and Microsoft Teams.
+
+Stop typing the same polite pushbacks, meeting reschedule requests, and executive status reports from scratch. With a single click, draft flawless corporate responses, extract actionable deliverables from Teams chats, and stash 30+ open research tabs into tidy project workspaces.
+
+100% PRIVATE & ZERO-SERVER TELEMETRY:
+Your confidential corporate emails, client correspondence, and project tabs NEVER touch any third-party server. All draft generation and workspace stashing run 100% locally in your Microsoft Edge browser sandbox.
+
+
+🌟 WHAT'S UNLOCKED WITH PRO LIFETIME LICENSE:
+
+✉️ Unlimited AI Email Drafts in Outlook Web:
+1-click smart corporate templates (Polite Pushback, Executive Status, Formal Alignment, Meeting Reschedule, Friendly Follow-up) customized with your sender name, job title, and company.
+
+🗂️ Unlimited Project Workspaces (Tab Stash):
+Group related project tabs into named workspaces with one shortcut (Ctrl+Shift+U). Free up browser RAM and restore entire client research sessions in 1 click.
+
+📝 Teams Meeting Action-Item Extractor:
+Highlight unstructured chat messages or meeting notes and instantly distill them into structured checklists with assigned owners and deadlines.
+
+💻 3-Device Commercial License:
+Activate your single license key on up to 3 personal or work computers (Work Laptop, Home Desktop, Office PC).
+
+🔑 Optional BYOK (Bring-Your-Own-Key):
+Use our instant offline heuristic corporate templates (zero API costs), or plug in your personal OpenAI (GPT-4o) or Google Gemini API key for fully adaptive AI drafts.
+
+🔄 Lifetime Updates & Priority Support:
+All future features, new corporate templates, and browser compatibility updates included forever. No recurring monthly subscriptions.
+
+
+💡 HOW TO ACTIVATE AFTER PURCHASE:
+1. Copy the License Key displayed on your Gumroad receipt.
+2. Click the OfficeMate extension icon in your Edge toolbar (or press Alt+Shift+C).
+3. Paste your key into the "Pro License Key" box and click "Activate".
+4. All Pro features unlock immediately!
+
+
+5. CUSTOMER FULFILLMENT & RECEIPT MESSAGE
+--------------------------------------------------------------------------------
+(Paste into: Gumroad > Content Tab > Custom message / Receipt):
+
+Thank you for upgrading to OfficeMate Pro! 🎉
+
+Your purchase includes a lifetime commercial license with free updates and up to 3 device activations.
+
+QUICK START INSTRUCTIONS:
+1. Make sure you have the OfficeMate for Edge extension installed.
+2. Click the OfficeMate icon in your browser toolbar or press Alt+Shift+C.
+3. Paste your License Key from this receipt into the Pro License field.
+4. Click "Activate".
+
+NEED HELP OR DEVICE TRANSFER?
+If you ever switch computers or need assistance, visit our official documentation:
+👉 https://sajusun.github.io/extensions/officemate/
+
+Work faster, write better, and reclaim your workday!
+================================================================================
+

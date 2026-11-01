@@ -1,0 +1,144 @@
+================================================================================
+OFFICEMATE FOR EDGE — MICROSOFT EDGE ADD-ONS SUBMISSION DOSSIER
+Portal: Microsoft Partner Center (https://partner.microsoft.com/dashboard/microsoftedge)
+================================================================================
+
+1. PRODUCT IDENTITY & STORE METADATA
+--------------------------------------------------------------------------------
+Product Name / Title:
+OfficeMate for Edge - Outlook AI Drafts & Tab Stash
+
+Short Name:
+OfficeMate
+
+Short Description (EXACTLY 124 chars - limit is 132 chars):
+Productivity copilot for Microsoft 365: 1-click Outlook email replies, Teams action extractor, and project workspace tab stashing.
+
+Single Purpose Description:
+A productivity utility designed for Microsoft 365 users to streamline Outlook email drafting with structured executive templates, extract action items from meeting notes, and organize browser tabs into savable project workspaces.
+
+Category:
+Primary: Productivity
+Secondary: Search Tools
+
+Languages:
+English (United States)
+
+Search Terms / Keywords (Up to 7 terms):
+1. outlook ai
+2. email assistant
+3. tab manager
+4. teams meeting notes
+5. productivity
+6. email templates
+7. workspace manager
+
+Official URLs:
+Website / Landing Page: https://sajusun.github.io/extensions/officemate/
+Privacy Policy URL: https://sajusun.github.io/extensions/officemate/privacy/
+Support / Feedback URL: https://sajusun.github.io/extensions/officemate/
+Gumroad Checkout URL: https://sajusun.gumroad.com/l/officemate-pro
+Gumroad Product Verify ID: ujrPYYMB6DKRyi6Exc7rWw==
+
+
+2. DETAILED STORE DESCRIPTION (COPY & PASTE READY)
+--------------------------------------------------------------------------------
+💼 OfficeMate for Edge: The Executive Productivity Copilot for Microsoft 365
+
+Reclaim 10+ hours every week from repetitive Outlook email replies, messy meeting notes, and cluttered browser tabs.
+
+OfficeMate brings an intelligent productivity sidebar and in-page copilot directly into Microsoft Edge, engineered specifically for professionals, managers, and remote workers who live inside Outlook Web, Microsoft Teams, and cloud web apps.
+
+🔒 100% CLIENT-SIDE PRIVACY ARCHITECTURE:
+Confidential corporate communications, emails, and client research URLs NEVER leave your computer. All email draft generation, workspace tab stashing, and note taking run locally inside your browser sandbox. Zero telemetry. Zero remote databases.
+
+🌟 CORE CAPABILITIES:
+
+1. ✉️ 1-Click Executive Outlook Email Replies:
+• Injects a floating Smart Reply button directly into Outlook Web.
+• Select from curated corporate tones: Polite Pushback, Executive Status, Formal Alignment, Meeting Reschedule, or Friendly Follow-up.
+• Automatically personalizes sign-offs with your name, job title, and company.
+
+2. 🗂️ Project Workspace Tab Stasher (Ctrl + Shift + U):
+• Working on multiple client projects? Stash 30+ open tabs into named workspaces with one shortcut.
+• Frees up system RAM and lets you restore entire project sessions instantly without losing context.
+
+3. 📝 Teams Meeting Notes & Action-Item Extractor:
+• Highlight messy meeting chat threads or transcript segments and instantly distill them into structured action items with assigned owners and deadlines.
+
+4. ⚡ Conflict-Free Global Shortcuts:
+• Alt + Shift + C : Toggle floating Copilot Sidebar on any active tab.
+• Ctrl + Shift + U : Quick-stash current window tabs into a new workspace.
+
+5. 🔑 Offline Heuristics + Optional BYOK:
+• Works 100% offline with zero subscription fees using built-in corporate template heuristics.
+• Advanced users can optionally connect their personal OpenAI (GPT-4o) or Google Gemini API key for dynamic contextual generation.
+
+⭐ FREE VS PRO:
+• Free Community Edition: 3 AI drafts/day, 1 saved workspace, full sidebar.
+• Pro Lifetime License ($8.99): Unlimited daily drafts, unlimited workspaces, custom signatures, 3-device roaming activation, and lifetime updates.
+
+
+3. NOTES FOR CERTIFICATION (INSTRUCTIONS FOR REVIEWERS)
+--------------------------------------------------------------------------------
+(When prompted: "Does a tester need credentials, accounts, or any other info to test your extension?"):
+Select: "Yes, I need to provide credentials, accounts, or other info for testers"
+
+Notes for certification:
+--------------------------------------------------------------------------------
+Dear Microsoft Certification Team,
+
+Thank you for reviewing OfficeMate for Edge. OfficeMate is a standalone productivity companion and does NOT require any third-party account registration.
+
+HOW TO TEST ALL FEATURES:
+1. Open any regular webpage (e.g. https://bing.com or https://outlook.live.com).
+2. Press Alt + Shift + C (or click the OfficeMate extension icon in the toolbar) to open the floating Copilot Sidebar.
+3. Test AI Email Drafts: Choose a tone (e.g. "Polite Pushback") and click "Generate Draft" to observe instant local template generation.
+4. Test Tab Stash: Switch to the "Workspaces" tab in the sidebar and click "Stash Current Tabs" to create a saved workspace.
+5. HOW TO TEST PRO ACTIVATION (VIP TEST KEY):
+   - Open the extension popup by clicking the OfficeMate toolbar icon.
+   - In the "Pro License Key" field, enter the official reviewer VIP test key:
+     TEST KEY: OFFICEMATE-PRO-VIP
+   - Click "Activate".
+   - The extension will immediately activate all Pro capabilities (unlimited drafts and unlimited workspaces) without requiring any payment.
+
+PRIVACY & DATA SAFETY:
+All workspaces, draft preferences, and meeting notes are stored strictly in local browser memory (chrome.storage.local). No confidential corporate emails or browsing data are ever transmitted to external servers.
+--------------------------------------------------------------------------------
+
+
+4. PERMISSIONS JUSTIFICATION (MICROSOFT EDGE AUDIT)
+--------------------------------------------------------------------------------
+• storage:
+  Used to store user preferences (sender name, job title, signature, AI provider selection) and save stashed workspace tab URLs in local browser storage (chrome.storage.local).
+
+• tabs:
+  Required by the Workspace Tab Stasher to read currently open tab URLs and titles when the user clicks "Stash Current Tabs" and restore them when reopening a workspace.
+
+• activeTab:
+  Used to summon and toggle the floating Copilot Sidebar overlay on the user's active tab upon pressing the keyboard shortcut (Alt+Shift+C).
+
+• scripting:
+  Required to programmatically inject the isolated Copilot sidebar component and Outlook Smart Reply button into the active tab's DOM.
+
+• contextMenus:
+  Used to provide right-click context menu shortcuts ("Save selection as Meeting Note", "Open OfficeMate Sidebar").
+
+• host_permissions ("https://api.gumroad.com/*", "https://api.openai.com/*", "https://generativelanguage.googleapis.com/*"):
+  - https://api.gumroad.com/* : Used solely to verify user license keys against Gumroad's license validation API.
+  - https://api.openai.com/* & https://generativelanguage.googleapis.com/* : Used strictly when the user optionally enables the BYOK (Bring-Your-Own-Key) AI provider and enters their personal API key.
+
+
+5. ASSETS CHECKLIST
+--------------------------------------------------------------------------------
+Located in: officemate/public/store-assets/
+
+- icon-300.png                     -> 300 x 300 px (Edge Add-ons Store Logo)
+- icon-600.png                     -> 600 x 600 px (High-Res Discovery Icon)
+- gumroad-thumbnail-600x600.png    -> 600 x 600 px (Gumroad 1:1 Product Thumbnail)
+- gumroad-cover-1280x720.png       -> 1280 x 720 px (Gumroad 16:9 Showcase Cover)
+- promo-small-440x280.png          -> 440 x 280 px (Small Promo Tile)
+- promo-marquee-1400x560.png       -> 1400 x 560 px (Hero Marquee Banner)
+- officemate.zip                   -> 1.38 MB (Store-Ready Package)
+================================================================================
+

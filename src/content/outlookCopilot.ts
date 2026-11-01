@@ -64,7 +64,7 @@ function injectOutlookToolbar(onDraftReady?: (text: string) => void) {
             warn.style.cssText = 'color: #f87171; font-size: 11px; margin-top: 4px; font-weight: 600; width: 100%;';
             toolbar.appendChild(warn);
           }
-          warn.innerHTML = '⚠️ Daily free limit reached! <a href="#pro_key" target="_blank" style="color: #fbbf24; font-weight: 700; text-decoration: underline; margin-left: 4px;">Upgrade to Pro (#pro_key) ↗</a>';
+          warn.innerHTML = '⚠️ Daily free limit reached! <a href="https://sajusun.gumroad.com/l/officemate-pro" target="_blank" style="color: #fbbf24; font-weight: 700; text-decoration: underline; margin-left: 4px;">Upgrade to Pro on Gumroad ↗</a>';
           return;
         }
 

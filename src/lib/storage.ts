@@ -1,3 +1,9 @@
+export const MAX_ALLOWED_DEVICES = 3;
+export const SUPPORT_WEBSITE_URL = 'https://sajusun.github.io/extensions/officemate/';
+export const OFFICEMATE_GUMROAD_PRODUCT_ID = 'ujrPYYMB6DKRyi6Exc7rWw==';
+export const OFFICEMATE_GUMROAD_PRODUCT_PERMALINK = 'officemate-pro';
+export const OFFICEMATE_BUY_URL = 'https://sajusun.gumroad.com/l/officemate-pro';
+
 import { OfficeMateSettings, ProjectWorkspace, MeetingNote } from './types';
 
 const SETTINGS_KEY = 'officemate_settings';
@@ -132,13 +138,99 @@ export async function deleteMeetingNote(id: string): Promise<void> {
   });
 }
 
-export async function activateLicenseKey(key: string): Promise<{ success: boolean; message: string }> {
-  const cleanKey = key.trim().toUpperCase();
-  const valid = cleanKey === 'OFFICEMATE-PRO-VIP' || cleanKey.startsWith('OM-') || cleanKey.length >= 12;
+export async function activateLicenseKey(key: string, productPermalink = OFFICEMATE_GUMROAD_PRODUCT_PERMALINK): Promise<{ success: boolean; message: string }> {
+  const cleanKey = key.trim();
+  if (!cleanKey) {
+    return { success: false, message: 'License key cannot be empty.' };
+  }
 
-  if (valid) {
-    await saveSettings({ isPro: true, proLicenseKey: cleanKey });
+  // 0. Check if already activated on THIS device with THIS key
+  const currentSettings = await getSettings();
+  if (currentSettings.isPro && currentSettings.proLicenseKey === cleanKey) {
+    return { success: true, message: 'This device is already activated with OfficeMate Pro!' };
+  }
+
+  // 1. Instant reviewer / VIP demo bypass (offline verification for store certification)
+  if (cleanKey.toUpperCase() === 'OFFICEMATE-PRO-VIP') {
+    await saveSettings({ isPro: true, proLicenseKey: 'OFFICEMATE-PRO-VIP' });
     return { success: true, message: '🎉 OfficeMate Pro Activated! Unlimited AI drafts & workspaces unlocked.' };
   }
-  return { success: false, message: 'Invalid license key. Please check the key from your purchase receipt.' };
+
+  if (cleanKey.length < 8) {
+    return { success: false, message: 'Invalid license key format. Please check the key from your Gumroad receipt.' };
+  }
+
+  // 2. Online Verification via Gumroad API with 3-Device Enforced Limit
+  try {
+    // Step A: Inspect validity and current device usage WITHOUT incrementing counter
+    const checkRes = await fetch('https://api.gumroad.com/v2/licenses/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        product_id: OFFICEMATE_GUMROAD_PRODUCT_ID,
+        product_permalink: productPermalink,
+        license_key: cleanKey,
+        increment_uses_count: 'false'
+      })
+    });
+
+    const checkData = await checkRes.json();
+
+    if (!checkData || checkData.success !== true) {
+      const err = checkData?.message || 'The entered license key could not be verified on Gumroad.';
+      return { success: false, message: `❌ Verification failed: ${err}` };
+    }
+
+    if (checkData.purchase?.refunded || checkData.purchase?.chargebacked) {
+      return { success: false, message: '❌ Verification failed: This license key has been refunded or disputed.' };
+    }
+
+    const currentUses = typeof checkData.uses === 'number' ? checkData.uses : 0;
+
+    // Enforce 3-Device Maximum Limit
+    if (currentUses >= MAX_ALLOWED_DEVICES) {
+      return {
+        success: false,
+        message: `❌ Activation limit reached (${currentUses}/${MAX_ALLOWED_DEVICES} devices). If you upgraded or changed your device, please visit ${SUPPORT_WEBSITE_URL} for assistance.`
+      };
+    }
+
+    // Step B: Capacity available (< 3 devices) -> Register new device seat (+1 use)
+    const activateRes = await fetch('https://api.gumroad.com/v2/licenses/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        product_id: OFFICEMATE_GUMROAD_PRODUCT_ID,
+        product_permalink: productPermalink,
+        license_key: cleanKey,
+        increment_uses_count: 'true'
+      })
+    });
+
+    const activateData = await activateRes.json();
+
+    if (activateData && activateData.success === true) {
+      const newUses = typeof activateData.uses === 'number' ? activateData.uses : (currentUses + 1);
+      await saveSettings({
+        isPro: true,
+        proLicenseKey: cleanKey
+      });
+      return {
+        success: true,
+        message: `🎉 OfficeMate Pro Lifetime License Activated! (Device ${newUses} of ${MAX_ALLOWED_DEVICES})`
+      };
+    } else {
+      const err = activateData?.message || 'Could not complete device registration.';
+      return { success: false, message: `❌ Activation failed: ${err}` };
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: `Could not connect to Gumroad license server (${error?.message || 'Check your connection'}).`
+    };
+  }
 }

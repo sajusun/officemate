@@ -92,7 +92,7 @@ export class OfficeMateSidebar {
           proLink.removeAttribute('href');
         } else {
           proLink.textContent = '👑 Get Pro ↗';
-          proLink.href = '#pro_key';
+          proLink.href = 'https://sajusun.gumroad.com/l/officemate-pro';
         }
       }
       this.refreshWorkspaces();
@@ -116,7 +116,7 @@ export class OfficeMateSidebar {
         <div class="sidebar-title-group">
           <div class="pill-logo" style="width: 22px; height: 22px; font-size: 10px;">OM</div>
           <span class="sidebar-title">OfficeMate Copilot</span>
-          <a href="#pro_key" target="_blank" id="sidebar-pro-link" style="font-size: 10px; font-weight: 700; color: #fbbf24; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); padding: 2px 7px; border-radius: 4px; text-decoration: none; margin-left: 8px;">👑 Get Pro ↗</a>
+          <a href="https://sajusun.gumroad.com/l/officemate-pro" target="_blank" id="sidebar-pro-link" style="font-size: 10px; font-weight: 700; color: #fbbf24; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); padding: 2px 7px; border-radius: 4px; text-decoration: none; margin-left: 8px;">👑 Get Pro ↗</a>
         </div>
         <button class="close-btn" id="btn-close-sidebar">✕</button>
       </div>
@@ -236,7 +236,7 @@ export class OfficeMateSidebar {
     sidebar.querySelector('#btn-generate-draft')?.addEventListener('click', async () => {
       const { allowed } = await canGenerateDraft();
       if (!allowed) {
-        this.showToast('Daily free draft limit (3) reached! Upgrade to Pro (#pro_key) for unlimited drafts.');
+        this.showToast('Daily free draft limit (3) reached! Upgrade to Pro on Gumroad for unlimited drafts.');
         return;
       }
 
