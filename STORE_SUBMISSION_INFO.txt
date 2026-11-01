@@ -11,8 +11,8 @@ OfficeMate for Edge - Outlook AI Drafts & Tab Stash
 Short Name:
 OfficeMate
 
-Short Description (EXACTLY 124 chars - limit is 132 chars):
-Productivity copilot for Microsoft 365: 1-click Outlook email replies, Teams action extractor, and project workspace tab stashing.
+Short Description (EXACTLY 111 chars - limit is 132 chars):
+Productivity copilot for Microsoft 365: 1-click Outlook email replies, Teams notes, and workspace tab stashing.
 
 Single Purpose Description:
 A productivity utility designed for Microsoft 365 users to streamline Outlook email drafting with structured executive templates, extract action items from meeting notes, and organize browser tabs into savable project workspaces.

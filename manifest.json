@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "OfficeMate for Edge - Outlook AI Drafts, Teams Notes & Tab Stash",
+  "name": "OfficeMate for Edge - Outlook AI Drafts",
   "version": "1.0.0",
-  "description": "Productivity copilot for Microsoft 365: 1-click professional Outlook email replies, Teams meeting action-item extractor, and project workspace tab stashing.",
+  "description": "Productivity copilot for Microsoft 365: 1-click Outlook email replies, Teams notes, and workspace tab stashing.",
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
@@ -16,14 +16,21 @@
     "scripting",
     "contextMenus"
   ],
+  "host_permissions": [
+    "https://api.gumroad.com/*"
+  ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": true
     }
@@ -40,8 +47,13 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["icons/*", "officemateSidebar.css"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "icons/*",
+        "officemateSidebar.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "commands": {

@@ -66,8 +66,8 @@ Need help or device reset? Visit:
 ## ২. Microsoft Edge Add-ons পার্টনার সেন্টার সাবমিশন
 
 * **Product Title:** `OfficeMate for Edge - Outlook AI Drafts & Tab Stash`
-* **Short Description (১২৪ অক্ষর):**  
-  `Productivity copilot for Microsoft 365: 1-click Outlook email replies, Teams action extractor, and project workspace tab stashing.`
+* **Short Description (১১১ অক্ষর):**  
+  `Productivity copilot for Microsoft 365: 1-click Outlook email replies, Teams notes, and workspace tab stashing.`
 * **Category:** Primary: `Productivity` | Secondary: `Search Tools`
 * **Search Terms (৭টি):**  
   `outlook ai`, `email assistant`, `tab manager`, `teams meeting notes`, `productivity`, `email templates`, `workspace manager`
