@@ -5,6 +5,12 @@ export const OFFICEMATE_GUMROAD_PRODUCT_PERMALINK = 'officemate-pro';
 export const OFFICEMATE_BUY_URL = 'https://sajusun.gumroad.com/l/officemate-pro';
 
 import { OfficeMateSettings, ProjectWorkspace, MeetingNote } from './types';
+import {
+  computeSha256,
+  isReviewerKey,
+  generateLicenseSignature,
+  verifyProIntegrity
+} from './security';
 
 const SETTINGS_KEY = 'officemate_settings';
 const WORKSPACES_KEY = 'officemate_workspaces';
@@ -28,7 +34,49 @@ const DEFAULT_SETTINGS: OfficeMateSettings = {
   lastDraftDate: getTodayString()
 };
 
+const DEVICE_ID_KEY = 'officemate_device_id';
+
+export async function getOrCreateDeviceId(): Promise<string> {
+  return new Promise((resolve) => {
+    chrome.storage.local.get([DEVICE_ID_KEY], (res) => {
+      let id = res[DEVICE_ID_KEY];
+      if (!id) {
+        const entropy = [
+          typeof navigator !== 'undefined' ? navigator.userAgent : '',
+          typeof navigator !== 'undefined' ? navigator.language : '',
+          typeof screen !== 'undefined' ? `${screen.width}x${screen.height}` : '',
+          Date.now().toString(),
+          Math.random().toString(36).substring(2)
+        ].join('|');
+        id = 'om-dev-' + computeSha256(entropy).substring(0, 16);
+        chrome.storage.local.set({ [DEVICE_ID_KEY]: id });
+      }
+      resolve(id);
+    });
+  });
+}
+
 export async function getSettings(): Promise<OfficeMateSettings> {
+  const deviceId = await getOrCreateDeviceId();
+  return new Promise((resolve) => {
+    chrome.storage.local.get([SETTINGS_KEY], (res) => {
+      let raw: OfficeMateSettings = res[SETTINGS_KEY] || { ...DEFAULT_SETTINGS };
+      const { isValid, sanitized } = verifyProIntegrity(raw, deviceId);
+      if (!isValid) {
+        chrome.storage.local.set({ [SETTINGS_KEY]: sanitized });
+      }
+      const today = getTodayString();
+      if (sanitized.lastDraftDate !== today) {
+        sanitized.lastDraftDate = today;
+        sanitized.freeDraftsUsedToday = 0;
+        chrome.storage.local.set({ [SETTINGS_KEY]: sanitized });
+      }
+      resolve(sanitized);
+    });
+  });
+}
+
+function _unusedOldGetSettings(): Promise<OfficeMateSettings> {
   return new Promise((resolve) => {
     chrome.storage.local.get([SETTINGS_KEY], (res) => {
       let settings: OfficeMateSettings = res[SETTINGS_KEY] || { ...DEFAULT_SETTINGS };
@@ -150,9 +198,17 @@ export async function activateLicenseKey(key: string, productPermalink = OFFICEM
     return { success: true, message: 'This device is already activated with OfficeMate Pro!' };
   }
 
-  // 1. Instant reviewer / VIP demo bypass (offline verification for store certification)
-  if (cleanKey.toUpperCase() === 'OFFICEMATE-PRO-VIP') {
-    await saveSettings({ isPro: true, proLicenseKey: 'OFFICEMATE-PRO-VIP' });
+  const deviceId = await getOrCreateDeviceId();
+
+  // 1. Instant reviewer / VIP demo verification via SHA-256 hash (no plaintext in bundle)
+  if (isReviewerKey(cleanKey)) {
+    const sig = generateLicenseSignature(cleanKey, deviceId);
+    await saveSettings({
+      isPro: true,
+      proLicenseKey: cleanKey.toUpperCase(),
+      proAuthSig: sig,
+      proActivatedAt: Date.now()
+    });
     return { success: true, message: '🎉 OfficeMate Pro Activated! Unlimited AI drafts & workspaces unlocked.' };
   }
 
@@ -215,9 +271,12 @@ export async function activateLicenseKey(key: string, productPermalink = OFFICEM
 
     if (activateData && activateData.success === true) {
       const newUses = typeof activateData.uses === 'number' ? activateData.uses : (currentUses + 1);
+      const sig = generateLicenseSignature(cleanKey, deviceId);
       await saveSettings({
         isPro: true,
-        proLicenseKey: cleanKey
+        proLicenseKey: cleanKey,
+        proAuthSig: sig,
+        proActivatedAt: Date.now()
       });
       return {
         success: true,
@@ -233,4 +292,12 @@ export async function activateLicenseKey(key: string, productPermalink = OFFICEM
       message: `Could not connect to Gumroad license server (${error?.message || 'Check your connection'}).`
     };
   }
+}
+
+export async function deactivateLicenseKey(): Promise<void> {
+  await saveSettings({
+    isPro: false,
+    proLicenseKey: '',
+    proAuthSig: undefined
+  });
 }

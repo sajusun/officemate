@@ -1,4 +1,4 @@
-import { saveWorkspace, getWorkspaces } from '../lib/storage';
+import { saveWorkspace, getWorkspaces, getSettings } from '../lib/storage';
 import { ProjectWorkspace, TabItem } from '../lib/types';
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -157,3 +157,12 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   return true;
 });
+
+// Active Anti-Tamper Defense: Real-time storage surveillance
+if (typeof chrome !== 'undefined' && chrome.storage?.onChanged) {
+  chrome.storage.onChanged.addListener(async (changes, areaName) => {
+    if (areaName === 'local' && changes['officemate_settings']) {
+      await getSettings(); // Automatically validates signature and sanitizes if console hack detected
+    }
+  });
+}

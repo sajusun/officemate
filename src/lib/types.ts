@@ -41,6 +41,8 @@ export interface MeetingNote {
 export interface OfficeMateSettings {
   isPro: boolean;
   proLicenseKey?: string;
+  proAuthSig?: string;
+  proActivatedAt?: number;
   aiProvider: 'offline' | 'openai' | 'gemini';
   aiApiKey?: string;
   aiModel?: string;
