@@ -2,9 +2,18 @@ import { build } from 'vite';
 import { resolve } from 'path';
 import fs from 'fs';
 
-async function runBuild() {
+const targetArg = process.argv.find((arg) => arg.startsWith('--target='));
+const target = targetArg ? targetArg.split('=')[1] : 'all'; // 'chrome' | 'firefox' | 'all'
+
+async function buildTarget(currentTarget) {
+  const isFirefox = currentTarget === 'firefox';
   const rootDir = process.cwd();
-  const distDir = resolve(rootDir, 'dist');
+  const outDirName = isFirefox ? 'dist-firefox' : 'dist';
+  const distDir = resolve(rootDir, outDirName);
+
+  console.log(`\n========================================`);
+  console.log(`🚀 Building OfficeMate for ${currentTarget.toUpperCase()} -> ./${outDirName}`);
+  console.log(`========================================`);
 
   if (fs.existsSync(distDir)) {
     fs.rmSync(distDir, { recursive: true, force: true });
@@ -16,7 +25,7 @@ async function runBuild() {
     configFile: false,
     base: '',
     build: {
-      outDir: 'dist',
+      outDir: outDirName,
       emptyOutDir: false,
       rollupOptions: {
         input: {
@@ -26,11 +35,11 @@ async function runBuild() {
     }
   });
 
-  console.log('⚙️ Step 2: Building Background Service Worker (Workspace Stash Engine)...');
+  console.log('⚙️ Step 2: Building Background Script (Workspace Stash Engine)...');
   await build({
     configFile: false,
     build: {
-      outDir: 'dist',
+      outDir: outDirName,
       emptyOutDir: false,
       lib: {
         entry: resolve(rootDir, 'src/background/index.ts'),
@@ -44,7 +53,7 @@ async function runBuild() {
   await build({
     configFile: false,
     build: {
-      outDir: 'dist',
+      outDir: outDirName,
       emptyOutDir: false,
       lib: {
         entry: resolve(rootDir, 'src/content/index.ts'),
@@ -62,9 +71,24 @@ async function runBuild() {
     fs.copyFileSync(sidebarCssSrc, sidebarCssDist);
   }
 
-  console.log('📋 Step 5: Copying Manifest and High-Res Icons...');
-  const manifest = fs.readFileSync(resolve(rootDir, 'manifest.json'), 'utf-8');
-  fs.writeFileSync(resolve(distDir, 'manifest.json'), manifest);
+  console.log('📋 Step 5: Preparing Manifest and High-Res Icons...');
+  const manifestRaw = fs.readFileSync(resolve(rootDir, 'manifest.json'), 'utf-8');
+  const manifest = JSON.parse(manifestRaw);
+
+  if (isFirefox) {
+    manifest.background = {
+      scripts: ['background.js'],
+      type: 'module'
+    };
+    manifest.browser_specific_settings = {
+      gecko: {
+        id: 'officemate@sajusun.github.io',
+        strict_min_version: '109.0'
+      }
+    };
+  }
+
+  fs.writeFileSync(resolve(distDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
 
   const iconsSrc = resolve(rootDir, 'public/icons');
   const iconsDist = resolve(distDir, 'icons');
@@ -72,10 +96,19 @@ async function runBuild() {
     fs.cpSync(iconsSrc, iconsDist, { recursive: true });
   }
 
-  console.log('✅ OfficeMate for Edge build completed successfully! Load unpacked from ./dist in Microsoft Edge or Chrome.');
+  console.log(`✅ OfficeMate for ${currentTarget.toUpperCase()} build completed successfully -> ./${outDirName}`);
 }
 
-runBuild().catch((err) => {
+async function run() {
+  if (target === 'all') {
+    await buildTarget('chrome');
+    await buildTarget('firefox');
+  } else {
+    await buildTarget(target);
+  }
+}
+
+run().catch((err) => {
   console.error('❌ Build failed:', err);
   process.exit(1);
 });

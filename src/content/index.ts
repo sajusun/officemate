@@ -11,7 +11,7 @@ function initOfficeMate() {
     sidebarInstance = new OfficeMateSidebar(sidebarCss);
     sidebarInstance.init();
     initOutlookCopilot();
-    console.log('⚡ OfficeMate for Edge initialized on page.');
+    console.log('⚡ OfficeMate initialized on page.');
   } catch (err) {
     console.error('Failed to initialize OfficeMate', err);
   }
@@ -22,6 +22,17 @@ if (document.readyState === 'loading') {
 } else {
   initOfficeMate();
 }
+
+// Prevent Firefox menu bar intercepting Alt+Shift shortcuts
+window.addEventListener(
+  'keydown',
+  (e: KeyboardEvent) => {
+    if (e.altKey && e.shiftKey && e.code === 'KeyC') {
+      e.preventDefault();
+    }
+  },
+  true // Capture phase
+);
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.action === 'TOGGLE_SIDEBAR') {
