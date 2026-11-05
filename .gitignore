@@ -5,3 +5,4 @@ dist-firefox
 *.xpi
 .DS_Store
 *.log
+config.bat

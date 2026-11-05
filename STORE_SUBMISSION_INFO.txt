@@ -1,4 +1,11 @@
 ================================================================================
+STATUS: ✅ PUBLISHED & LIVE IN STORE
+Official Microsoft Edge Add-ons Store URL:
+https://microsoftedge.microsoft.com/addons/detail/folpplogkobfgekdggdnjokhimlofong
+Store Add-on ID: folpplogkobfgekdggdnjokhimlofong
+================================================================================
+
+================================================================================
 OFFICEMATE FOR EDGE — MICROSOFT EDGE ADD-ONS SUBMISSION DOSSIER
 Portal: Microsoft Partner Center (https://partner.microsoft.com/dashboard/microsoftedge)
 ================================================================================
